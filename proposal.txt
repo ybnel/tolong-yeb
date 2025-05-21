@@ -1,0 +1,182 @@
+Entity Relationship Diagram (ERD) - Aplikasi Tiket BioskopEntitas Utama:
+
+users
+
+
+id (INT, PK, AI)
+name (VARCHAR)
+email (VARCHAR, UNIQUE)
+password (VARCHAR)
+role_id (INT, FK)
+created_at (TIMESTAMP)
+updated_at (TIMESTAMP)
+
+
+
+roles
+
+
+id (INT, PK, AI)
+name (VARCHAR, UNIQUE) - (e.g., "Admin", "Customer")
+created_at (TIMESTAMP)
+updated_at (TIMESTAMP)
+
+
+
+films
+
+
+id (INT, PK, AI)
+title (VARCHAR)
+description (TEXT)
+duration_minutes (INT)
+release_date (DATE)
+genre (VARCHAR)
+poster_image_url (VARCHAR, NULLABLE)
+created_at (TIMESTAMP)
+updated_at (TIMESTAMP)
+
+
+
+studios
+
+
+id (INT, PK, AI)
+name (VARCHAR)
+total_seats (INT) - (Bisa juga dihitung dari tabel seats)
+created_at (TIMESTAMP)
+updated_at (TIMESTAMP)
+
+
+
+seats (Template kursi per studio)
+
+
+id (INT, PK, AI)
+studio_id (INT, FK)
+seat_row (CHAR(1)) - (e.g., 'A', 'B')
+seat_number (INT) - (e.g., 1, 2, 3)
+type (VARCHAR, DEFAULT 'regular') - (e.g., "regular", "VIP")
+created_at (TIMESTAMP)
+updated_at (TIMESTAMP)
+Constraint: UNIQUE (studio_id, seat_row, seat_number)
+
+
+
+schedules (Jadwal tayang)
+
+
+id (INT, PK, AI)
+film_id (INT, FK)
+studio_id (INT, FK)
+show_time (DATETIME)
+price (DECIMAL(10,2))
+created_at (TIMESTAMP)
+updated_at (TIMESTAMP)
+
+
+
+bookings (Pemesanan)
+
+
+id (INT, PK, AI)
+user_id (INT, FK)
+schedule_id (INT, FK)
+booking_code (VARCHAR, UNIQUE) - (e.g., "INV20250519XYZ")
+booking_time (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+total_price (DECIMAL(10,2))
+status (ENUM('pending', 'confirmed', 'cancelled', 'completed'), DEFAULT 'pending')
+created_at (TIMESTAMP)
+updated_at (TIMESTAMP)
+
+
+
+booking_seats (Detail kursi yang dipesan dalam satu booking - Junction Table)
+
+
+id (INT, PK, AI)
+booking_id (INT, FK)
+seat_id (INT, FK)
+price_at_booking (DECIMAL(10,2)) - (Harga kursi saat booking, bisa beda jika ada promo/tipe kursi)
+created_at (TIMESTAMP)
+updated_at (TIMESTAMP)
+Constraint: UNIQUE (booking_id, seat_id)
+Constraint: UNIQUE (schedule_id dari bookings + seat_id) - ini penting untuk mencegah double booking kursi di jadwal yang sama. Ini bisa dihandle di logic aplikasi atau dengan trigger jika DB mendukung.
+
+
+Relasi:
+users (1) --- (M) roles: users.role_id references roles.id
+
+Satu user memiliki satu role. Satu role bisa dimiliki banyak user.
+
+
+films (1) --- (M) schedules: schedules.film_id references films.id
+
+Satu film bisa memiliki banyak jadwal tayang. Satu jadwal tayang hanya untuk satu film.
+
+
+studios (1) --- (M) schedules: schedules.studio_id references studios.id
+
+Satu studio bisa memiliki banyak jadwal tayang. Satu jadwal tayang hanya di satu studio.
+
+
+studios (1) --- (M) seats: seats.studio_id references studios.id
+
+Satu studio memiliki banyak kursi. Satu kursi (template) milik satu studio.
+
+
+users (1) --- (M) bookings: bookings.user_id references users.id
+
+Satu user bisa melakukan banyak booking. Satu booking dibuat oleh satu user.
+
+
+schedules (1) --- (M) bookings: bookings.schedule_id references schedules.id
+
+Satu jadwal tayang bisa memiliki banyak booking. Satu booking untuk satu jadwal tayang.
+
+
+bookings (1) --- (M) booking_seats: booking_seats.booking_id references bookings.id
+
+Satu booking bisa terdiri dari pemesanan banyak kursi.
+
+
+seats (1) --- (M) booking_seats: booking_seats.seat_id references seats.id
+
+Satu kursi (template) bisa dipesan di banyak booking (tapi untuk jadwal yang berbeda-beda).
+
+
+Memenuhi Kriteria "Minimal 4 table DB yang memiliki 2 koneksi One to Many atau Many to Many (diluar table user)"
+films:
+
+films (1) --- (M) schedules (One to Many)
+
+
+studios:
+
+studios (1) --- (M) schedules (One to Many)
+studios (1) --- (M) seats (One to Many)
+
+
+schedules:
+
+schedules (1) --- (M) bookings (One to Many)
+(Relasi ke films dan studios adalah Many to One dari sisi schedules)
+
+
+bookings:
+
+bookings (1) --- (M) booking_seats (One to Many)
+(Relasi ke users dan schedules adalah Many to One dari sisi bookings)
+
+
+seats:
+
+
+seats (1) --- (M) booking_seats (One to Many, jika dilihat dari sisi seats ke booking_seats untuk berbagai booking berbeda)
+
+
+
+Many to Many yang di-resolve oleh junction table:
+
+
+bookings (M) --- (M) seats (melalui booking_seats) untuk satu schedule tertentu.
