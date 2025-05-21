@@ -1,0 +1,112 @@
+KERANGKA PROPOSAL PROYEK AKHIR
+Judul Proyek: Pengembangan Aplikasi Pemesanan Tiket Bioskop Berbasis Web Menggunakan Laravel dan MySQL
+HALAMAN JUDUL
+Judul Proyek
+Logo Universitas (jika ada/diperlukan)
+Nama Mata Kuliah
+Nama Dosen Pengampu
+Disusun oleh:
+Nama Anggota 1 (NIM)
+Nama Anggota 2 (NIM)
+Nama Anggota 3 (NIM)
+Nama Anggota 4 (NIM)
+Nama Anggota 5 (NIM)
+Program Studi Informatika
+Fakultas Teknik (atau sesuai)
+Nama Universitas
+Tahun 2025
+DAFTAR ISI
+BAB I: PENDAHULUAN
+1.1 Latar Belakang Aplikasi
+Jelaskan masalah yang ada: kesulitan memesan tiket bioskop secara manual (antre, waktu terbatas, pilihan kursi terbatas saat di lokasi).
+Kebutuhan akan sistem online yang efisien dan user-friendly.
+Manfaat aplikasi: kemudahan akses, pemilihan kursi, informasi film lengkap, efisiensi bagi pengelola bioskop (jika ada fitur admin).
+Singgung relevansi proyek dengan perkembangan teknologi dan kebutuhan pasar.
+1.2 Rumusan Masalah (Opsional, tapi bisa memperjelas)
+Bagaimana merancang dan membangun sistem pemesanan tiket bioskop online yang memenuhi kebutuhan pengguna dan admin?
+Fitur apa saja yang esensial untuk aplikasi pemesanan tiket bioskop?
+Bagaimana mengelola data film, jadwal, studio, dan pemesanan secara efektif?
+1.3 Tujuan Proyek
+Mengembangkan aplikasi pemesanan tiket bioskop berbasis web menggunakan framework Laravel dan database MySQL.
+Menyediakan antarmuka yang intuitif bagi pengguna (customer) untuk mencari film, melihat jadwal, memilih kursi, dan melakukan pemesanan.
+Menyediakan dashboard bagi admin untuk mengelola data master (film, studio, jadwal, pengguna) dan melihat laporan.
+Memenuhi semua kriteria yang ditetapkan untuk proyek akhir.
+1.4 Batasan Masalah
+Aplikasi fokus pada pemesanan tiket dan pengelolaan data terkait.
+Pembayaran mungkin disimulasikan atau menggunakan metode konfirmasi manual (jelaskan jika ada batasan teknis).
+Tidak mencakup fitur kompleks seperti integrasi payment gateway pihak ketiga (kecuali jika memang direncanakan dan mampu).
+Aplikasi berbasis web, tidak mobile native (kecuali jika ada rencana).
+BAB II: FITUR APLIKASI YANG AKAN DIBUAT
+2.1 Deskripsi Umum Aplikasi
+Gambaran singkat cara kerja aplikasi dari sudut pandang pengguna (customer dan admin).
+2.2 User Role
+Admin:
+Mengelola data film (CRUD).
+Mengelola data studio dan template kursi (CRUD).
+Mengelola data jadwal tayang (CRUD).
+Mengelola data pengguna dan role (CRUD).
+Melihat laporan penjualan dan film terlaris.
+(Opsional) Mengkonfirmasi pemesanan/pembayaran.
+Customer:
+Melakukan registrasi dan login.
+Melihat daftar film yang sedang tayang dan akan datang.
+Melihat detail film (sinopsis, durasi, genre, poster).
+Melihat jadwal tayang per film dan per studio.
+Memilih kursi berdasarkan denah studio.
+Melakukan pemesanan tiket.
+Melihat riwayat pemesanan.
+(Opsional) Melakukan pembatalan tiket (dengan syarat tertentu).
+2.3 Rincian Fitur Utama
+2.3.1 Modul Autentikasi & Otorisasi
+Login (untuk Admin dan Customer)
+Sign Up (untuk Customer)
+Logout
+Middleware untuk proteksi route berdasarkan role.
+2.3.2 Modul Master Data (CRUD)
+Manajemen Film (oleh Admin)
+Manajemen Studio (oleh Admin)
+Manajemen Kursi (template per studio, oleh Admin)
+Manajemen Jadwal Tayang (oleh Admin)
+Manajemen Pengguna (Tambah User & Role, oleh Admin)
+2.3.3 Modul Transaksi
+Pemesanan Tiket: Proses dari pemilihan film, jadwal, kursi, hingga konfirmasi pesanan (oleh Customer).
+Pembatalan Tiket: (Jika diimplementasikan) Proses pembatalan pesanan oleh Customer atau Admin (jelaskan aturannya).
+(Pastikan minimal 2 fitur transaksi yang berbeda dari login/signup)
+2.3.4 Modul Laporan (dengan Filter)
+Laporan Penjualan Tiket: Dapat difilter berdasarkan rentang tanggal, film, studio (oleh Admin).
+Laporan Film Terlaris: Dapat difilter berdasarkan periode waktu (misal: mingguan, bulanan) (oleh Admin).
+(Pastikan minimal 2 laporan dengan filter)
+BAB III: RANCANGAN SISTEM
+3.1 Arsitektur Sistem (Opsional)
+Diagram sederhana yang menunjukkan interaksi antara pengguna, aplikasi web (Laravel), dan database (MySQL).
+3.2 Rancangan Database (ERD)
+Sertakan gambar ERD yang sudah dibuat.
+Berikan deskripsi singkat untuk setiap tabel utama dan relasinya.
+Jelaskan bagaimana ERD ini memenuhi syarat "Minimal 4 table DB yang memiliki 2 koneksi One to Many atau Many to Many (diluar table user)".
+3.3 Rancangan Kasaran Antarmuka Pengguna (Mockup)
+Sertakan gambar/sketsa mockup (boleh hitam putih, digambar tangan atau menggunakan tools seperti Balsamiq, Figma mode low-fidelity).
+Minimal tampilkan mockup untuk halaman-halaman kunci:
+Halaman Login & Registrasi
+Dashboard Admin (gambaran umum)
+Contoh Halaman CRUD Admin (misal: Manajemen Film)
+Halaman Utama Customer (Daftar Film)
+Halaman Detail Film & Pemilihan Jadwal
+Halaman Pemilihan Kursi (visualisasi denah kursi)
+Halaman Konfirmasi Pemesanan/Checkout
+Contoh Halaman Laporan Admin
+BAB IV: RENCANA IMPLEMENTASI (Opsional, tapi baik untuk ditambahkan)
+4.1 Pembagian Tugas Kelompok
+Sebutkan nama anggota dan tanggung jawab utama masing-masing (misal: Frontend, Backend-Autentikasi, Backend-MasterData, Backend-Transaksi & Laporan, Database & Testing).
+4.2 Jadwal Pengerjaan Proyek (Timeline Kasar)
+Buat perkiraan waktu untuk setiap tahapan (misal: Minggu 1-2: Desain & Setup, Minggu 3-5: Pengembangan Fitur Admin, dst.).
+4.3 Teknologi yang Digunakan
+Framework Backend: Laravel (versi)
+Database: MySQL (versi)
+Frontend: HTML, CSS, JavaScript, Tailwind CSS / Bootstrap (pilih salah satu atau keduanya)
+Tools lain: Git, Composer, Web Server (XAMPP/Laragon), VS Code, dll.
+BAB V: PENUTUP
+Kesimpulan singkat mengenai proyek yang akan dikerjakan.
+Harapan terhadap hasil akhir proyek.
+LAMPIRAN (Jika ada)
+ERD dalam ukuran lebih besar.
+Mockup lebih detail jika sudah ada.
