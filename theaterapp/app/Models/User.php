@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -32,17 +33,25 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+    protected $casts = ['email_verified_at'=>'datetime', 'password' =>'hashed'];
 
+    public function role(){
+        return $this->belongsTo(Role::class);
+    }
+
+    public function bookings(){
+        return $this->hasMany(Booking::class);
+    }
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'email_verified_at' => 'datetime',
+    //         'password' => 'hashed',
+    //     ];
+    // }
 }
