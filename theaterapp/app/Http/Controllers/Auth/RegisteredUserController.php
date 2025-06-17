@@ -30,15 +30,21 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'], // Validasi untuk first_name
+            'last_name' => ['required', 'string', 'max:255'],  // Validasi untuk last_name
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Menggabungkan first_name dan last_name menjadi satu field 'name'
+        // untuk disimpan ke kolom 'name' di tabel 'users'.
+        $fullName = $request->first_name . ' ' . $request->last_name;
+
         $user = User::create([
-            'name' => $request->name,
+            'name' => $fullName, // Menggunakan nama lengkap yang digabungkan
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role_id' => 2,
         ]);
 
         event(new Registered($user));

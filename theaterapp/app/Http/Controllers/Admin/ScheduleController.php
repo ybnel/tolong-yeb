@@ -11,17 +11,17 @@ class ScheduleController extends Controller
 {
     public function index()
     {
-        // Eager loading relasi 'film' dan 'studio' untuk efisiensi query
         $schedules = Schedule::with(['film', 'studio'])->latest()->paginate(10);
+        // UBAH INI: dari 'admin.showtimes.index' menjadi 'admin.schedules.index'
         return view('admin.schedules.index', compact('schedules'));
     }
 
     public function create()
     {
-        // Kirim data film dan studio ke view untuk dropdown
         $films = Film::all();
         $studios = Studio::all();
-        return view('admin.schedules.form', compact('films', 'studios'));
+        // UBAH INI: dari 'admin.showtimes.form' menjadi 'admin.schedules.create' (mengikuti konvensi resource)
+        return view('admin.schedules.create', compact('films', 'studios'));
     }
 
     public function store(Request $request)
@@ -34,14 +34,16 @@ class ScheduleController extends Controller
         ]);
 
         Schedule::create($validated);
-        return redirect()->route('admin.schedules.index')->with('success', 'Jadwal berhasil ditambahkan.');
+        // Rute redirect juga perlu disesuaikan dengan nama rute resource yang benar
+        return redirect()->route('admin.showtimes.index')->with('success', 'Jadwal berhasil ditambahkan.'); // <--- TETAP 'admin.showtimes.index' untuk rute
     }
 
     public function edit(Schedule $schedule)
     {
         $films = Film::all();
         $studios = Studio::all();
-        return view('admin.schedules.form', compact('schedule', 'films', 'studios'));
+        // UBAH INI: dari 'admin.showtimes.form' menjadi 'admin.schedules.edit' (mengikuti konvensi resource)
+        return view('admin.schedules.edit', compact('schedule', 'films', 'studios'));
     }
 
     public function update(Request $request, Schedule $schedule)
@@ -54,12 +56,14 @@ class ScheduleController extends Controller
         ]);
 
         $schedule->update($validated);
-        return redirect()->route('admin.schedules.index')->with('success', 'Jadwal berhasil diperbarui.');
+        // Rute redirect juga perlu disesuaikan dengan nama rute resource yang benar
+        return redirect()->route('admin.showtimes.index')->with('success', 'Jadwal berhasil diperbarui.'); // <--- TETAP 'admin.showtimes.index' untuk rute
     }
 
     public function destroy(Schedule $schedule)
     {
         $schedule->delete();
-        return redirect()->route('admin.schedules.index')->with('success', 'Jadwal berhasil dihapus.');
+        // Rute redirect juga perlu disesuaikan dengan nama rute resource yang benar
+        return redirect()->route('admin.showtimes.index')->with('success', 'Jadwal berhasil dihapus.'); // <--- TETAP 'admin.showtimes.index' untuk rute
     }
 }

@@ -17,7 +17,9 @@ class FilmController extends Controller
     // Menampilkan form untuk menambah film baru
     public function create()
     {
-        return view('admin.films.form');
+        // UBAH INI: dari 'admin.films.form' (yang mungkin tidak ada) menjadi 'admin.films.create'
+        // Ini adalah konvensi nama view untuk form pembuatan di resource controller.
+        return view('admin.films.create');
     }
 
     // Menyimpan data dari form tambah ke database
@@ -35,19 +37,23 @@ class FilmController extends Controller
 
         // Buat record baru di tabel 'films'
         Film::create($validated);
+        // Rute redirect sudah benar jika Anda menggunakan 'admin.films' sebagai resource
         return redirect()->route('admin.films.index')->with('success', 'Film berhasil ditambahkan.');
     }
 
     // Menampilkan detail satu film
     public function show(Film $film)
     {
+        // UBAH INI: dari 'admin.films.show' menjadi 'admin.films.show'
         return view('admin.films.show', compact('film'));
     }
 
     // Menampilkan form untuk mengedit film
     public function edit(Film $film)
     {
-        return view('admin.films.form', compact('film'));
+        // UBAH INI: dari 'admin.films.form' menjadi 'admin.films.edit'
+        // Ini adalah konvensi nama view untuk form pengeditan di resource controller.
+        return view('admin.films.edit', compact('film'));
     }
 
     // Menyimpan data dari form edit ke database
@@ -64,6 +70,7 @@ class FilmController extends Controller
 
         // Update record film yang ada
         $film->update($validated);
+        // Rute redirect sudah benar jika Anda menggunakan 'admin.films' sebagai resource
         return redirect()->route('admin.films.index')->with('success', 'Film berhasil diperbarui.');
     }
 
@@ -71,6 +78,7 @@ class FilmController extends Controller
     public function destroy(Film $film)
     {
         $film->delete();
+        // Rute redirect sudah benar jika Anda menggunakan 'admin.films' sebagai resource
         return redirect()->route('admin.films.index')->with('success', 'Film berhasil dihapus.');
     }
 }

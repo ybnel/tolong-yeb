@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers; // Pastikan namespace ini benar (App\Http\Controllers)
 
 use App\Models\Schedule;
 use App\Models\Booking;
@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
-class BookingController extends Controller
+class BookingController extends Controller // <-- UBAH NAMA KELAS DI SINI
 {
     /**
      * Menyiapkan dan menampilkan halaman pemilihan kursi untuk jadwal tertentu.
@@ -30,13 +30,13 @@ class BookingController extends Controller
             ->get();
 
         // 2. Kunci pencegahan double-booking:
-        // Ambil semua ID kursi yang SUDAH DIPESAN KHUSUS UNTUK JADWAL INI.
+        // Ambil semua ID kursi yang SUDAH DIPESAN KHUSUS UNTUS JADWAL INI.
         $booked_seat_ids = DB::table('booking_seats')
-                            ->join('bookings', 'booking_seats.booking_id', '=', 'bookings.id')
-                            ->where('bookings.schedule_id', $schedule->id)
-                            ->whereIn('bookings.status', ['confirmed', 'completed']) // Hanya booking yang valid
-                            ->pluck('booking_seats.seat_id')
-                            ->toArray();
+            ->join('bookings', 'booking_seats.booking_id', '=', 'bookings.id')
+            ->where('bookings.schedule_id', $schedule->id)
+            ->whereIn('bookings.status', ['confirmed', 'completed']) // Hanya booking yang valid
+            ->pluck('booking_seats.seat_id')
+            ->toArray();
 
         // 3. Kirim semua data yang diperlukan ke view.
         // Tim frontend akan menggunakan 'booked_seat_ids' untuk menonaktifkan kursi yang sudah terisi.
@@ -108,12 +108,11 @@ class BookingController extends Controller
     public function history(): View
     {
         /** @var \App\Models\User $user */
-         $user = Auth::user();
+        $user = Auth::user();
 
         // Ambil semua booking milik user yang sedang login.
         // `with()` digunakan untuk eager loading, agar tidak terjadi N+1 problem.
-        $bookings=$user->bookings()
-        //  $bookings = Auth::user()->bookings()
+        $bookings = $user->bookings()
             ->with('schedule.film', 'schedule.studio', 'seats')
             ->latest() // Urutkan dari yang terbaru
             ->get();

@@ -24,11 +24,20 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $request->authenticate(); // Otentikasi pengguna
 
-        $request->session()->regenerate();
+        $request->session()->regenerate(); // Regenerasi sesi
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // LOGIKA REDIRECT BERDASARKAN ROLE_ID
+        // Pastikan Anda membandingkan dengan tipe data yang benar (misal int)
+        // Periksa apakah pengguna yang diautentikasi adalah admin (role_id 1)
+        if (Auth::user()->role_id === 1) {
+            // Jika admin, arahkan ke dashboard admin
+            return redirect()->route('admin.dashboard');
+        } else {
+            // Jika bukan admin (misalnya role_id 2 atau lainnya), arahkan ke dashboard pengguna biasa
+            return redirect()->intended(route('dashboard', absolute: false));
+        }
     }
 
     /**
